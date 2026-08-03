@@ -870,5 +870,11 @@ local b={
 }
 local c={}
 for i=1,#b do c[i]=string.char(b[i]) end
-local f=loadstring(table.concat(c))
-if f then f() end
+local src=table.concat(c)
+local func, err = (loadstring or load)(src)
+if func then
+    local s, e = pcall(func)
+    if not s then warn('Script Error: ' .. tostring(e)) end
+else
+    warn('Loader Error: ' .. tostring(err))
+end
